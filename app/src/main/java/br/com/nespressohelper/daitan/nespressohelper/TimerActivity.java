@@ -13,6 +13,13 @@ import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
 
+/**
+ * This activity is responsible to alert the user when to stop
+ * the water flow from the machine. It receives all the
+ * necessary information from the previous activities, like
+ * how many bars the coffee has.
+ *
+ */
 public class TimerActivity extends AppCompatActivity {
 
     private DonutProgress dp;
@@ -23,6 +30,9 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
+        /**
+         * Receiving the number of bars.
+         */
         Bundle b = this.getIntent().getExtras();
         final ArrayList<Integer> tracosCapsula1 = b.getIntegerArrayList("Capsula1");
         final ArrayList<Integer> tracosCapsula2 = b.getIntegerArrayList("Capsula2");
@@ -33,6 +43,11 @@ public class TimerActivity extends AppCompatActivity {
 
 //        Log.d("TESTE", "100/tracosCapsula[pos]*3: " + (float) 100 / calc1);
 
+        /**
+         * Checking if the coffee utilizes two capsules,
+         * if not, it will only alert one time, otherwise,
+         * it will ring twice, one time per capsule.
+         */
         if(tracosCapsula2.get(pos) == 0){
             dp = (DonutProgress) findViewById(R.id.donut_progress);
             TextView instructions = (TextView) findViewById(R.id.instructions);
@@ -67,7 +82,13 @@ public class TimerActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
 
             dialog.show();
-        }else {
+        }
+        /**
+         * The coffee has two capsules, so it needs two timers
+         * one for each capsule. At the end of each timer it will ring
+         * alarm, to warns the user that he/she can stops the water flow.
+         */
+        else {
             dp = (DonutProgress) findViewById(R.id.donut_progress);
             TextView instructions = (TextView) findViewById(R.id.instructions);
 

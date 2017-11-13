@@ -16,6 +16,11 @@ import java.util.ArrayList;
  * Created by gabrielestrela on 09/11/17.
  */
 
+
+/**
+ * This class is necessary to create the GridView
+ * It is the custom adapter.
+ */
 public class CoffeGrid extends BaseAdapter {
    private Context mContext;
    private final String[] web;
@@ -61,6 +66,11 @@ public class CoffeGrid extends BaseAdapter {
         txt.setText(web[position]);
         ImageView img = (ImageView) grid.findViewById(R.id.gridImage);
 //        img.setImageResource(imageId[position]);
+        /**
+         * Picasso is used to better handling the images,
+         * and the cache.
+         * http://square.github.io/picasso/
+         */
         Picasso.with(mContext).load(imageId.get(position)).into(img);
 
         return grid;

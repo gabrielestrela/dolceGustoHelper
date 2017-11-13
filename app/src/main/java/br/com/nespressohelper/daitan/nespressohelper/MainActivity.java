@@ -1,28 +1,20 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
+/**
+ * MainActivity, it shows a coffe list to the user, a GridView with all Dolce Gusto options
+ * which the user can select to read some information about the coffe and than start a timer
+ * to help the preparation of the selected coffee.
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     CoffeGrid adapter;
+
+    /**
+     * It initializes the arrays for the GridView, with all Dolce Gusto coffees.
+     * It also initializes the values for the calculation of preparation time.
+     * Since I ain`t using any database, all resides in array lists.
+     */
 
     public void createArrays(){
         webArray.add("Espresso Intenso Decaffeinato");
@@ -187,6 +185,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        /**
+         * Step to run the array initialization only once, than
+         * resetting the array, with the purpose of adding new
+         * coffees to the list.
+         */
         if(firstRun) {
             createArrays();
         }else{
@@ -196,6 +200,11 @@ public class MainActivity extends AppCompatActivity {
             tracosCapsula1Array.clear();
             tracosCapsula2Array.clear();
             createArrays();
+
+            /**
+             * Checking for information from the AddProductActivity activity
+             * which will be used to refresh the list of coffees.
+             */
             Bundle c = this.getIntent().getExtras();
             if(c != null) {
                 n = c.getString("Nome");
@@ -227,11 +236,20 @@ public class MainActivity extends AppCompatActivity {
 //        Log.i("ONCREATE CALLED ", "!!!" );
 
 //        Log.i("WebArray Size: ", " => " + webArray.size());
+
+        /**
+         * Initilizing the GridView to show the coffees.
+         */
         adapter =  new CoffeGrid(MainActivity.this, webArray, imageIdArray);
 
         grid = (GridView) findViewById(R.id.coffeGrid);
 
         grid.setAdapter(adapter);
+
+        /**
+         * Preparing data to be sent to the next acitivity, which will display information about the
+         * selected coffee.
+         */
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -250,6 +268,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        /**
+         * Generation FAB that will add coffees to the GridView.
+         * The FAB button will hide when the user scrolls down the screen and
+         * appears when the user scrolls up.
+         */
         // Add a product
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
@@ -274,6 +298,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Starting the AddProductActivity.
+         */
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

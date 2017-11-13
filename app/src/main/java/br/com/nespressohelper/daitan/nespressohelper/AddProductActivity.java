@@ -1,19 +1,21 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.NavUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+/**
+ * This activity shows a form, that retrieves from the user,
+ * information about the coffee that will be added to the list
+ * of coffees.
+ */
 public class AddProductActivity extends AppCompatActivity {
 
     private String name, desc;
@@ -41,6 +43,11 @@ public class AddProductActivity extends AppCompatActivity {
                    tracos1.getText().toString().equals("")  ||
                    tracos2.getText().toString().equals("")){
 
+
+                    /**
+                     * A little warning for the user. When he/she does not
+                     * fill some of the fields.
+                     */
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddProductActivity.this);
                     builder.setMessage("Por favor, preencha todos os campos!")
                             .setTitle("Atenção");
@@ -53,6 +60,9 @@ public class AddProductActivity extends AppCompatActivity {
 
                     dialog.show();
                 }// if
+                /**
+                 * Passing the filled information back to the MainAcitivity.
+                 */
                 else {
                     name = prodNome.getText().toString();
                     desc = prodDesc.getText().toString();

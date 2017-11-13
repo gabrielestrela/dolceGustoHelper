@@ -7,11 +7,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-
+/**
+ * This Activity is responsible to show the properties of the selected coffees.
+ */
 public class ProductActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +20,11 @@ public class ProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_product);
 
 
-
+        /**
+         * Getting information from MainActivity, such as the coffee name
+         * coffee description and the number for post calculation related
+         * to the preparation time.
+         */
          Bundle b = this.getIntent().getExtras();
          ArrayList<String> productNames = b.getStringArrayList("ProductNames");
          ArrayList<String> productDescs = b.getStringArrayList("Desc");
@@ -41,6 +45,10 @@ public class ProductActivity extends AppCompatActivity {
 
         Button button = (Button) findViewById(R.id.prepare);
 
+        /**
+         * Starting the TimerActivity, which helps the user to prepare the
+         * selected coffee and passing the necessary information.
+         */
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

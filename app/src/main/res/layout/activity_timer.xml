@@ -7,6 +7,12 @@
     tools:context="br.com.nespressohelper.daitan.nespressohelper.TimerActivity"
     xmlns:custom="http://schemas.android.com/apk/res-auto">
 
+    <!--
+        https://github.com/lzyzsd/CircleProgress
+        Used a circle progress to show the percentage
+        of the preparation of the coffee
+    -->
+
     <com.github.lzyzsd.circleprogress.DonutProgress
         android:id="@+id/donut_progress"
         android:layout_width="wrap_content"
