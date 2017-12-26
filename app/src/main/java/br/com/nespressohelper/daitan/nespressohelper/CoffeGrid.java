@@ -1,6 +1,8 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +11,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 /**
  * Created by gabrielestrela on 09/11/17.
@@ -24,9 +28,10 @@ import java.util.ArrayList;
 public class CoffeGrid extends BaseAdapter {
    private Context mContext;
    private final String[] web;
-   private final ArrayList<Integer> imageId;
+   private final ArrayList<Bitmap> imageId;
+   private Target mTarget;
 
-    public CoffeGrid(Context mContext, ArrayList<String> web, ArrayList<Integer> imageId) {
+    public CoffeGrid(Context mContext, ArrayList<String> web, ArrayList<Bitmap> imageId) {
         this.mContext = mContext;
         this.web = web.toArray(new String[0]);
         this.imageId = imageId;
@@ -71,7 +76,9 @@ public class CoffeGrid extends BaseAdapter {
          * and the cache.
          * http://square.github.io/picasso/
          */
-        Picasso.with(mContext).load(imageId.get(position)).into(img);
+
+        //Picasso.with(mContext).load(imageId.get(position)).into(img);
+        img.setImageBitmap(imageId.get(position));
 
         return grid;
     }

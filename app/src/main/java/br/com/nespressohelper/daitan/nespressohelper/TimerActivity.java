@@ -34,12 +34,17 @@ public class TimerActivity extends AppCompatActivity {
          * Receiving the number of bars.
          */
         Bundle b = this.getIntent().getExtras();
-        final ArrayList<Integer> tracosCapsula1 = b.getIntegerArrayList("Capsula1");
-        final ArrayList<Integer> tracosCapsula2 = b.getIntegerArrayList("Capsula2");
-        final int pos = b.getInt("Pos");
+        final String coffeeName = b.getString("NAME");
+        dbRead coffeeRead = new dbRead();
+        Coffee coffee = coffeeRead.getCoffee(coffeeName);
+//        final ArrayList<Integer> tracosCapsula1 = b.getIntegerArrayList("Capsula1");
+//        final ArrayList<Integer> tracosCapsula2 = b.getIntegerArrayList("Capsula2");
+//        final int pos = b.getInt("Pos");
+        final int bars1 = coffee.getBars1();
+        final int bars2 = coffee.getBars2();
 
-        final int calc1 = tracosCapsula1.get(pos) * 3;
-        final int calc2 = tracosCapsula2.get(pos) * 3;
+        final int calc1 = bars1 * 3;
+        final int calc2 = bars2 * 3;
 
 //        Log.d("TESTE", "100/tracosCapsula[pos]*3: " + (float) 100 / calc1);
 
@@ -48,7 +53,7 @@ public class TimerActivity extends AppCompatActivity {
          * if not, it will only alert one time, otherwise,
          * it will ring twice, one time per capsule.
          */
-        if(tracosCapsula2.get(pos) == 0){
+        if(bars2 == 0){
             dp = (DonutProgress) findViewById(R.id.donut_progress);
             TextView instructions = (TextView) findViewById(R.id.instructions);
 
@@ -63,7 +68,7 @@ public class TimerActivity extends AppCompatActivity {
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    new CountDownTimer(tracosCapsula1.get(pos)*3*1000, 1000) {
+                    new CountDownTimer(bars1*3*1000, 1000) {
 
                         public void onTick(long millisUntilFinished) {
                             dp.setProgress(dp.getProgress()+ 100/calc1);
@@ -103,7 +108,7 @@ public class TimerActivity extends AppCompatActivity {
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    new CountDownTimer(tracosCapsula1.get(pos)*3*1000, 1000) {
+                    new CountDownTimer(bars1*3*1000, 1000) {
 
                         public void onTick(long millisUntilFinished) {
                             dp.setProgress(dp.getProgress()+ 100/calc1);
@@ -124,7 +129,7 @@ public class TimerActivity extends AppCompatActivity {
 
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    new CountDownTimer(tracosCapsula2.get(pos)*3*1000, 1000) {
+                                    new CountDownTimer(bars2*3*1000, 1000) {
 
                                         public void onTick(long millisUntilFinished) {
                                             dp.setProgress(dp.getProgress()+ 100/calc2);
