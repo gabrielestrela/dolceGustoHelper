@@ -1,0 +1,194 @@
+[
+	{
+		"name": "Espresso Intenso Decaffeinato",
+		"capsules": 1,
+		"mainWater": 2,
+		"mainMilk": 0,
+		"intensity": 7,
+		"description": "Cuidadosamente descafeinado, preserva todo o aroma, intensidade e sabor do nosso Espresso Intenso." 
+	},
+	{
+		"name": "Ristretto",
+		"capsules": 1,
+		"mainWater": 1,
+		"mainMilk": 0,
+		"intensity": 8,
+		"description": "Um blend de grãos selecionados Arábica e Robusta com torra mais intensa, sabor marcante e elegante, revelando um mix de aromas, como castanha, maçã e finalizando com notas de limão. Para aqueles que gostam de um “shot” de café, como os italianos." 
+	},
+	{
+		"name": "Ristretto Ardenza",
+		"capsules": 1,
+		"mainWater": 1,
+		"mainMilk": 0,
+		"intensity": 11, 
+		"description": "Blend de Arábica e Robusta, em perfeito de equilíbrio: perfil sensorial mais intenso de todos os cafés com notas de alcaçuz e leve toque picante. Café marcante que deixa um ater tasting após a degustação." 
+	},
+	{
+		"name": "Espresso",
+		"capsules": 1,
+		"mainWater": 2,
+		"mainMilk": 0,
+		"intensity": 5, 
+		"description": "O autêntico café Espresso. Encorpado e com uma crema única. Feito com grãos 100% Arábica, cuidadosamente torrados e moídos." 
+	},
+	{
+		"name": "Espresso Decaffeinato",
+		"capsules": 1,
+		"mainWater": 2,
+		"mainMilk": 0,
+		"intensity": 5,
+		"description": "Feito com grãos 100% Arábica, nosso descafeinado preserva todo o aroma e sabor do Espresso."
+	},
+	{
+		"name": "Espresso Intenso",
+		"capsules": 1,
+		"mainWater": 2,
+		"mainMilk": 0,
+		"intensity": 8, 
+		"description": "O irmão mais velho de nosso Espresso, ainda mais aromático e intenso. Aroma floral, sabor levemente picante, amargo e forte. Combinação de grãos selecionados de Arábica e Robusta." 
+	},
+	{
+		"name": "Espresso Barista",
+		"capsules": 1,
+		"mainWater": 1,
+		"mainMilk": 0,
+		"intensity": 9,
+		"description": "Café de alta torrefação de seus grãos Arábicas e Robusta, aroma aveludado e crema generosa, estilo café italiano. Rico e equilibrado com notas de chocolate e sabor requintado. Para aqueles que entendem e apreciam um bom café." 
+	},
+	{
+		"name": "Café Au Lait",
+		"capsules": 1,
+		"mainWater": 6,
+		"mainMilk": 0,
+		"intensity": -1,
+		"description": "A combinação perfeita do Café com Leite. Em uma só cápsula, grãos selecionados do tipo Robusta e leite integral." 
+	},
+	{
+		"name": "Capuccino",
+		"capsules": 2,
+		"mainWater": 1,
+		"mainMilk": 6,
+		"intensity": -1, 
+		"description": "Descubra o que ocorre quando um aromático Espresso 100% Arábica encontra a cremosidade do leite. Crema densa e aveludada e corpo equilibrado. O nosso clássico italiano." 
+	},
+	{
+		"name": "Caramel Latte Macchiato",
+		"capsules": 2,
+		"mainWater": 2,
+		"mainMilk": 5,
+		"intensity": -1,
+		"description": "Todo o sabor do tradicional Latte Macchiato, com um toque irresistível de caramelo." 
+	},
+	{
+		"name": "Cortado",
+		"capsules": 1,
+		"mainWater": 3,
+		"mainMilk": 0,
+		"intensity": -1, 
+		"description": "Encorpado e intenso, nosso Espresso 100% Arábica com uma toque especial de leite." 
+	},
+	{
+		"name": "Latte Macchiato",
+		"capsules": 2,
+		"mainWater": 2,
+		"mainMilk": 5,
+		"intensity": -1,
+		"description": "Quando você preparar, vai entender que esse sabor não é só um Café com Leite. Torrefação suave, combinado com a crema de leite integral, levemente adocicado. Grãos 100% Arábica." 
+	},
+	{
+		"name": "Soy Cappuccino",
+		"capsules": 2,
+		"mainWater": 2,
+		"mainMilk": 5,
+		"intensity": -1,
+		"description": "O Soy Cappuccino mantém o harmonioso encontro entre o café 100% Arábica e a cremosidade do leite, sem lactose." 
+	},
+	{
+		"name": "Vanilla Latte Macchiato",
+		"capsules": 2,
+		"mainWater": 2,
+		"mainMilk": 5,
+		"intensity": -1,
+		"description": "O sabor da baunilha é que faz essa bebida tão especial. Descubra o sabor do encontro de um delicioso café, leite cremoso e um toque de baunilha."
+	},
+	{
+		"name": "Nestea Limão",
+		"capsules": 1,
+		"mainWater": 7,
+		"mainMilk": 0,
+		"intensity": -1,
+		"description": "Todo o frescor de Nestea® em um só clique. Chá refrescante com sabor limão e uma generosa camada de espuma." 
+	},
+	{
+		"name": "Nestea Pêssego",
+		"capsules": 1,
+		"mainWater": 7,
+		"mainMilk": 0,
+		"intensity": -1,
+		"description": "Todo o frescor de Nestea® em um só clique. Chá refrescante com sabor pêssego e uma generosa camada de espuma." 
+	},
+	{
+		"name": "Chococino",
+		"capsules": 2,
+		"mainWater": 3,
+		"mainMilk": 3,
+		"intensity": -1,
+		"description": "Chocolate quente cremoso feito com os melhores grãos de cacau, que se misturam com a riqueza e cremosidade do leite. Para todos aqueles que apreciam o verdadeiro sabor do chocolate." 
+	},
+	{
+		"name": "Chococino Caramel",
+		"capsules": 2,
+		"mainWater": 3,
+		"mainMilk": 3,
+		"intensity": -1,
+		"description": "Uma combinação única. Todo o sabor do chocolate com a cremosidade do leite um irresistível toque de caramelo. Seu paladar vai se apaixonar." 
+	},
+	{
+		"name": "Mocha",
+		"capsules": 2,
+		"mainWater": 3,
+		"mainMilk": 3,
+		"intensity": -1,
+		"description": "A bebida perfeita para quem quer entrar no mundo do café. Combinação do leite cremoso, chocolate e um toque de café 100% Arábica." 
+	},
+	{
+		"name": "Nescau",
+		"capsules": 1,
+		"mainWater": 4,
+		"mainMilk": 0,
+		"intensity": -1,
+		"description": "O sabor do achocolatado mais famoso do Brasil, em uma só cápsula. Contém Active-Go: um composto exclusivo com cálcio, ferro e vitaminas para o seu café da manhã ficar ainda mais completo." 
+	},
+	{
+		"name": "Café Matinal",
+		"capsules": 1,
+		"mainWater": 4,
+		"mainMilk": 0,
+		"intensity": 9,
+		"description": "Para deixar ainda mais brasileiro e associá-lo a sua ocasião perfeita: o Café da Manhã!" 
+	},
+	{
+		"name": "Lungo",
+		"capsules": 1,
+		"mainWater": 4,
+		"mainMilk": 0,
+		"intensity": 6,
+		"description": "Grãos 100% Arábica com torrefação média, aroma frutado e torrado. Intenso sabor aromático, ligeiramente picante, com notas persistentes no paladar mesmo após degustação. Pode ser degustado no café da manhã ou em qualquer hora do dia." 
+	},
+	{
+		"name": "Chai Tea Latte",
+		"capsules": 2,
+		"mainWater": 3,
+		"mainMilk": 3,
+		"intensity": -1, 
+		"description": "A exótica combinação do chá preto, leite cremoso e uma seleta combinação de especiarias: canela, gengibre cardamomo e cravo." 
+	},
+	{
+		"name": "Marrakesh Style Tea",
+		"capsules": 1,
+		"mainWater": 6,
+		"mainMilk": 0,
+		"intensity": -1,
+		"description": "Mergulhe na maravilha do chá marroquino. Uma mistura do aromático chá verde, menta intensamente saborosa e refrescante, coberto com a cremosa espuma e adoçado com perfeição." 
+	}
+]

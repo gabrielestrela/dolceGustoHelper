@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F7EAEA"
-    tools:context="br.com.nespressohelper.daitan.nespressohelper.AddProductActivity">
+    tools:context="br.com.nespressohelper.daitan.nespressohelper.AddProductActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <TextView
         android:id="@+id/textView"
@@ -16,20 +17,22 @@
         android:textColor="@android:color/black"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="95dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="37dp"
         android:layout_marginTop="92dp"
         android:text="Nome:"
         android:textColor="@android:color/black"
         android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/prodDesc"
         app:layout_constraintEnd_toStartOf="@+id/prodNome"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -38,7 +41,7 @@
         android:id="@+id/prodNome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="9dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView2"
@@ -51,73 +54,75 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="18dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="48dp"
         android:text="Descrição:"
         android:textColor="@android:color/black"
         android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/prodDesc"
         app:layout_constraintEnd_toStartOf="@+id/prodDesc"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prodNome" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/prodDesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="13dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="166dp"
         android:ems="10"
         android:inputType="textMultiLine"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView3" />
+        app:layout_constraintStart_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="198dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="199dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginStart="37dp"
         android:text="Quantidade de Café (Traços):"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/tracos1"
+        app:layout_constraintEnd_toStartOf="@+id/tracos1"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/tracos1"
-        android:layout_width="110dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:inputType="number"
         android:textAlignment="center"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView4"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/prodDesc" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
         android:layout_marginStart="37dp"
-        android:layout_marginTop="37dp"
         android:text="Quantidade de Leite (Traços):"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tracos1" />
+        app:layout_constraintBaseline_toBaselineOf="@+id/tracos2"
+        app:layout_constraintEnd_toStartOf="@+id/tracos2"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/tracos2"
-        android:layout_width="109dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="19dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="7dp"
         android:ems="10"
         android:inputType="number"
         android:textAlignment="center"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/tracos1" />
 
     <Button
@@ -125,24 +130,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginEnd="22dp"
         android:background="#3B1F1F"
         android:text="Adicionar"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/uploadImage" />
 
     <ImageView
         android:id="@+id/uploadImage"
         android:layout_width="0dp"
         android:layout_height="29dp"
-        android:layout_marginBottom="19dp"
+        android:layout_marginBottom="67dp"
         android:layout_marginEnd="126dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/addBtn"
+        android:layout_marginTop="68dp"
+        app:layout_constraintBottom_toBottomOf="@+id/addBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintTop_toBottomOf="@+id/tracos2"
         app:srcCompat="@drawable/attach" />
 
     <TextView
@@ -151,10 +156,41 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="14dp"
         android:layout_marginStart="115dp"
+        android:layout_marginTop="11dp"
         android:text="Subir Imagem:"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/uploadImage"
         app:layout_constraintEnd_toStartOf="@+id/uploadImage"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/uploadImage" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:layout_marginStart="158dp"
+        android:layout_marginTop="20dp"
+        android:text="Intensidade:"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/activity_horizontal_margin"
+        app:layout_constraintEnd_toStartOf="@+id/intensity"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/intensity" />
+
+    <EditText
+        android:id="@+id/intensity"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginBottom="22dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="number"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/uploadImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
 </android.support.constraint.ConstraintLayout>

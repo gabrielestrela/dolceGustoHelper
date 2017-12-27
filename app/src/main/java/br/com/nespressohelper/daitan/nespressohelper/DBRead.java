@@ -9,12 +9,12 @@ import java.util.ArrayList;
  * Created by estrela on 12/21/17.
  */
 
-public class dbRead {
+public class DBRead {
 
     public ArrayList<Coffee> getCoffees() {
 
-        SQLiteDatabase database = db.getInstance().getReadableDatabase();
-        String query = "SELECT * FROM " + db.TABLE_COFFEE;
+        SQLiteDatabase database = DB.getInstance().getReadableDatabase();
+        String query = "SELECT * FROM " + DB.TABLE_COFFEE;
         ArrayList<Coffee> coffees = new ArrayList<>();
 
         Cursor c = database.rawQuery(query, null);
@@ -27,9 +27,9 @@ public class dbRead {
                 coffee.setCapsules(c.getInt(1));
                 coffee.setBars1(c.getInt(2));
                 coffee.setBars2(c.getInt(3));
-                coffee.setDescription(c.getString(4));
-//                coffee.setImageId(c.getInt(5));
-                coffee.setImage(c.getBlob(5));
+                coffee.setIntensity(c.getInt(4));
+                coffee.setDescription(c.getString(5));
+                coffee.setImage(c.getBlob(6));
 
                 coffees.add(coffee);
             }while (c.moveToNext());
@@ -43,8 +43,8 @@ public class dbRead {
 
         Coffee coffee = new Coffee();
 
-        SQLiteDatabase database = db.getInstance().getReadableDatabase();
-        String query = "SELECT * FROM " + db.TABLE_COFFEE + " WHERE NAME = '" + name + "'";
+        SQLiteDatabase database = DB.getInstance().getReadableDatabase();
+        String query = "SELECT * FROM " + DB.TABLE_COFFEE + " WHERE NAME = '" + name + "'";
 
         Cursor c = database.rawQuery(query, null);
 
@@ -53,9 +53,9 @@ public class dbRead {
             coffee.setCapsules(c.getInt(1));
             coffee.setBars1(c.getInt(2));
             coffee.setBars2(c.getInt(3));
-            coffee.setDescription(c.getString(4));
-//            coffee.setImageId(c.getInt(5));
-            coffee.setImage(c.getBlob(5));
+            coffee.setIntensity(c.getInt(4));
+            coffee.setDescription(c.getString(5));
+            coffee.setImage(c.getBlob(6));
         }
 
         c.close();
@@ -63,8 +63,8 @@ public class dbRead {
     }
 
     public boolean existCoffe(String name) {
-        SQLiteDatabase database = db.getInstance().getReadableDatabase();
-        String query = "SELECT * FROM " + db.TABLE_COFFEE + " WHERE NAME = '" + name + "'";
+        SQLiteDatabase database = DB.getInstance().getReadableDatabase();
+        String query = "SELECT * FROM " + DB.TABLE_COFFEE + " WHERE NAME = '" + name + "'";
 
         Cursor c = database.rawQuery(query, null);
 

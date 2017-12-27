@@ -27,14 +27,21 @@ import java.util.TreeSet;
  */
 public class CoffeGrid extends BaseAdapter {
    private Context mContext;
-   private final String[] web;
-   private final ArrayList<Bitmap> imageId;
+   private String[] web;
+   private ArrayList<Bitmap> imageBitmaps;
    private Target mTarget;
 
-    public CoffeGrid(Context mContext, ArrayList<String> web, ArrayList<Bitmap> imageId) {
+    public CoffeGrid(Context mContext, ArrayList<String> web, ArrayList<Bitmap> imageBitmaps) {
         this.mContext = mContext;
         this.web = web.toArray(new String[0]);
-        this.imageId = imageId;
+        this.imageBitmaps = imageBitmaps;
+    }
+
+    public void setGridValues(ArrayList<String> names, ArrayList<Bitmap> imageBitmaps) {
+        this.web = names.toArray(new String[0]);
+        this.imageBitmaps = imageBitmaps;
+
+        notifyDataSetChanged();
     }
 
     @Override
@@ -56,9 +63,6 @@ public class CoffeGrid extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View grid = convertView;
 
-//        grid = new View(mContext);
-
-
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             grid = inflater.inflate(R.layout.grid_item, null);
@@ -70,15 +74,8 @@ public class CoffeGrid extends BaseAdapter {
         TextView txt = (TextView) grid.findViewById(R.id.gridTxt);
         txt.setText(web[position]);
         ImageView img = (ImageView) grid.findViewById(R.id.gridImage);
-//        img.setImageResource(imageId[position]);
-        /**
-         * Picasso is used to better handling the images,
-         * and the cache.
-         * http://square.github.io/picasso/
-         */
 
-        //Picasso.with(mContext).load(imageId.get(position)).into(img);
-        img.setImageBitmap(imageId.get(position));
+        img.setImageBitmap(imageBitmaps.get(position));
 
         return grid;
     }

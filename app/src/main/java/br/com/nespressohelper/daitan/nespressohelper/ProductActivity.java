@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import java.util.ArrayList;
 
 /**
  * This Activity is responsible to show the properties of the selected coffees.
@@ -33,7 +32,7 @@ public class ProductActivity extends AppCompatActivity {
          */
          Bundle b = this.getIntent().getExtras();
          final String coffeeName = b.getString("NAME");
-         dbRead coffeRead = new dbRead();
+         DBRead coffeRead = new DBRead();
          final Coffee coffe;
 
          coffe = coffeRead.getCoffee(coffeeName);

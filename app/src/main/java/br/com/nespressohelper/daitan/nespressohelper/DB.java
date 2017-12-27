@@ -7,22 +7,22 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by estrela on 12/21/17.
  */
 
-public class db extends SQLiteOpenHelper {
+public class DB extends SQLiteOpenHelper {
 
     private static String DB_NAME = "DB";
     private static int DB_VERSION = 1;
     public static String TABLE_COFFEE = "COFFEES";
 
-    private static db instance;
+    private static DB instance;
 
-    public static db getInstance() {
+    public static DB getInstance() {
         if(instance == null)
-            instance = new db();
+            instance = new DB();
         return instance;
     }
 
-    private db() {
-        super(app.getContext(), DB_NAME, null, DB_VERSION);
+    private DB() {
+        super(App.getContext(), DB_NAME, null, DB_VERSION);
     }
 
     @Override
