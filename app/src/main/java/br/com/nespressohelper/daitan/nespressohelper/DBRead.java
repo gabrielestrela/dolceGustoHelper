@@ -17,25 +17,25 @@ public class DBRead {
         String query = "SELECT * FROM " + DB.TABLE_COFFEE;
         ArrayList<Coffee> coffees = new ArrayList<>();
 
-        Cursor c = database.rawQuery(query, null);
+        Cursor cursor = database.rawQuery(query, null);
 
-        if(c.moveToFirst()) {
+        if(cursor.moveToFirst()) {
 
             do {
                 Coffee coffee = new Coffee();
-                coffee.setName(c.getString(0));
-                coffee.setCapsules(c.getInt(1));
-                coffee.setBars1(c.getInt(2));
-                coffee.setBars2(c.getInt(3));
-                coffee.setIntensity(c.getInt(4));
-                coffee.setDescription(c.getString(5));
-                coffee.setImage(c.getBlob(6));
+                coffee.setName(cursor.getString(CoffeeTableColumns.NAME));
+                coffee.setCapsules(cursor.getInt(CoffeeTableColumns.CAPSULES));
+                coffee.setBars1(cursor.getInt(CoffeeTableColumns.BARS1));
+                coffee.setBars2(cursor.getInt(CoffeeTableColumns.BARS2));
+                coffee.setIntensity(cursor.getInt(CoffeeTableColumns.INTENSITY));
+                coffee.setDescription(cursor.getString(CoffeeTableColumns.DESCRIPTION));
+                coffee.setImage(cursor.getBlob(CoffeeTableColumns.IMAGE));
 
                 coffees.add(coffee);
-            }while (c.moveToNext());
+            }while (cursor.moveToNext());
         }
 
-        c.close();
+        cursor.close();
         return coffees;
     }
 
@@ -46,19 +46,19 @@ public class DBRead {
         SQLiteDatabase database = DB.getInstance().getReadableDatabase();
         String query = "SELECT * FROM " + DB.TABLE_COFFEE + " WHERE NAME = '" + name + "'";
 
-        Cursor c = database.rawQuery(query, null);
+        Cursor cursor = database.rawQuery(query, null);
 
-        if(c.moveToFirst()) {
-            coffee.setName(c.getString(0));
-            coffee.setCapsules(c.getInt(1));
-            coffee.setBars1(c.getInt(2));
-            coffee.setBars2(c.getInt(3));
-            coffee.setIntensity(c.getInt(4));
-            coffee.setDescription(c.getString(5));
-            coffee.setImage(c.getBlob(6));
+        if(cursor.moveToFirst()) {
+            coffee.setName(cursor.getString(CoffeeTableColumns.NAME));
+            coffee.setCapsules(cursor.getInt(CoffeeTableColumns.CAPSULES));
+            coffee.setBars1(cursor.getInt(CoffeeTableColumns.BARS1));
+            coffee.setBars2(cursor.getInt(CoffeeTableColumns.BARS2));
+            coffee.setIntensity(cursor.getInt(CoffeeTableColumns.INTENSITY));
+            coffee.setDescription(cursor.getString(CoffeeTableColumns.DESCRIPTION));
+            coffee.setImage(cursor.getBlob(CoffeeTableColumns.IMAGE));
         }
 
-        c.close();
+        cursor.close();
         return coffee;
     }
 
@@ -66,15 +66,11 @@ public class DBRead {
         SQLiteDatabase database = DB.getInstance().getReadableDatabase();
         String query = "SELECT * FROM " + DB.TABLE_COFFEE + " WHERE NAME = '" + name + "'";
 
-        Cursor c = database.rawQuery(query, null);
+        Cursor cursor = database.rawQuery(query, null);
 
-        if(c.moveToFirst()) {
-            c.close();
-            return true;
-        }
-
-        c.close();
-        return false;
+        Boolean existsInDB = cursor.moveToFirst();
+        cursor.close();
+        return existsInDB;
     }
 
 }

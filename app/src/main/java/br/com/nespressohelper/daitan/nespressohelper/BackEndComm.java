@@ -1,8 +1,6 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -27,7 +25,6 @@ public class BackEndComm{
 
     OkHttpClient client = new OkHttpClient();
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void get(final String url, final BackEndCommHandler handler) throws IOException {
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -35,7 +32,7 @@ public class BackEndComm{
                 Request request = new Request.Builder().url(url).build();
 
                 try(Response response = client.newCall(request).execute()) {
-                    handler.handleResponse(response.body().string(), BackEndCommHandler.Method.GET);
+                    handler.handleResponse(response.body().string(), response.code(), BackEndCommHandler.Method.GET);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -84,7 +81,6 @@ public class BackEndComm{
         return json;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void post(final String url, final String json, final BackEndCommHandler handler) throws IOException{
         AsyncTask.execute(new Runnable() {
             @Override
@@ -94,7 +90,7 @@ public class BackEndComm{
                 Request request = new Request.Builder().url(url).post(body).build();
 
                 try(Response response = client.newCall(request).execute()) {
-                    handler.handleResponse(response.code(), BackEndCommHandler.Method.POST);
+                    handler.handleResponse(response.body().string(), response.code(), BackEndCommHandler.Method.POST);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

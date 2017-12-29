@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="#F7EAEA"
     tools:context="br.com.nespressohelper.daitan.nespressohelper.AddProductActivity"
-    tools:layout_editor_absoluteY="81dp">
+    tools:layout_editor_absoluteY="81dp"
+    android:id="@+id/contraintLayout">
 
     <TextView
         android:id="@+id/textView"

@@ -1,6 +1,5 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,20 +7,16 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -33,26 +28,23 @@ import java.io.IOException;
  */
 public class AddProductActivity extends AppCompatActivity implements BackEndCommHandler{
 
-    private String name, desc;
-    private int capsula1, capsula2, intensidadeNumber;
     public static final int GET_FROM_GALLERY = 1;
-    private Coffee coffee;
-    private static Bitmap bitmapAux;
+    private static Bitmap userInputBitmap;
     private Drawable drawable;
     private Bitmap bitmap;
     private ByteArrayOutputStream stream;
     private byte[] bitmapData;
+    EditText coffeeName;
+    EditText coffeeDesc;
+    EditText coffeeBars1;
+    EditText coffeeBars2;
+    EditText coffeeIntensity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
-        final EditText prodNome = (EditText) findViewById(R.id.prodNome);
-        final EditText prodDesc = (EditText) findViewById(R.id.prodDesc);
-        final EditText tracos1 = (EditText) findViewById(R.id.tracos1);
-        final EditText tracos2 = (EditText) findViewById(R.id.tracos2);
-        final EditText intensidade = (EditText) findViewById(R.id.intensity);
         final ImageView uploadImage = (ImageView) findViewById(R.id.uploadImage);
         Button addCoffe = (Button) findViewById(R.id.addBtn);
 
@@ -64,15 +56,10 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
         });
 
         addCoffe.setOnClickListener(new View.OnClickListener() {
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
 //                Log.d("CLICOU", "ADD");
-                if(prodNome.getText().toString().equals("") ||
-                   prodDesc.getText().toString().equals("") ||
-                   tracos1.getText().toString().equals("")  ||
-                   tracos2.getText().toString().equals("")  ||
-                   intensidade.getText().toString().equals("")) {
+                if(!validateInput()) {
 
 
                     /**
@@ -101,22 +88,40 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
         });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public boolean validateInput() {
+        coffeeName = (EditText) findViewById(R.id.prodNome);
+        coffeeDesc = (EditText) findViewById(R.id.prodDesc);
+        coffeeBars1 = (EditText) findViewById(R.id.tracos1);
+        coffeeBars2 = (EditText) findViewById(R.id.tracos2);
+        coffeeIntensity = (EditText) findViewById(R.id.intensity);
+        if(coffeeName.getText().toString().equals("") ||
+                coffeeDesc.getText().toString().equals("") ||
+                coffeeBars1.getText().toString().equals("")  ||
+                coffeeBars2.getText().toString().equals("")  ||
+                coffeeIntensity.getText().toString().equals("")) {
+
+            return false;
+
+        }else {
+            return true;
+        }
+    }
+
     public void generateCoffeeObj(){
         Coffee coffee = new Coffee();
 
         String name;
-        EditText coffeeName = (EditText) findViewById(R.id.prodNome);
+        coffeeName = (EditText) findViewById(R.id.prodNome);
         name = coffeeName.getText().toString();
         coffee.setName(name);
 
         int bars1;
-        EditText coffeeBars1 = (EditText) findViewById(R.id.tracos1);
+        coffeeBars1 = (EditText) findViewById(R.id.tracos1);
         bars1 = Integer.parseInt(coffeeBars1.getText().toString());
         coffee.setBars1(bars1);
 
         int bars2;
-        EditText coffeeBars2 = (EditText) findViewById(R.id.tracos2);
+        coffeeBars2 = (EditText) findViewById(R.id.tracos2);
         bars2 = Integer.parseInt(coffeeBars2.getText().toString());
         coffee.setBars2(bars2);
 
@@ -129,29 +134,17 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
         coffee.setCapsules(capsules);
 
         int intensity;
-        EditText coffeeIntensity = (EditText) findViewById(R.id.intensity);
+        coffeeIntensity = (EditText) findViewById(R.id.intensity);
         intensity = Integer.parseInt(coffeeIntensity.getText().toString());
         coffee.setIntensity(intensity);
 
         String description;
-        EditText coffeeDesc = (EditText) findViewById(R.id.prodDesc);
+        coffeeDesc = (EditText) findViewById(R.id.prodDesc);
         description = coffeeDesc.getText().toString();
         coffee.setDescription(description);
 
-        bitmap = bitmapAux;
-        if(bitmap == null) {
-            drawable = getDrawable(R.drawable.coffecapsule);
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-            stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            bitmapData = stream.toByteArray();
-            coffee.setImage(bitmapData);
-        }else{
-            stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            bitmapData = stream.toByteArray();
-            coffee.setImage(bitmapData);
-        }
+        bitmap = userInputBitmap;
+        coffee.setImage(generateImageByteArray(bitmap));
 
         DBUpdate update = new DBUpdate();
         if(update.addCoffee(coffee)) {
@@ -168,6 +161,23 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
 
     }
 
+    public byte[] generateImageByteArray(Bitmap bitmap) {
+        if (bitmap == null) {
+            drawable = getDrawable(R.drawable.coffecapsule);
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bitmapData = stream.toByteArray();
+            return bitmapData;
+        }
+        else{
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bitmapData = stream.toByteArray();
+            return bitmapData;
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -176,9 +186,9 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
         //Detects request codes
         if(requestCode==GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
             Uri selectedImage = data.getData();
-            bitmapAux = null;
+            userInputBitmap = null;
             try {
-                bitmapAux = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                userInputBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -189,14 +199,9 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
     }
 
     @Override
-    public void handleResponse(String response, Method m) {
-        //
-    }
-
-    @Override
-    public void handleResponse(int code, Method m) {
-        if(m == Method.POST) {
-            if(code == 200){
+    public void handleResponse(String response, int httpResponseCode, Method method) {
+        if(method == Method.POST) {
+            if(httpResponseCode == 200){
                 Handler mainHandler = new Handler(getMainLooper());
                 mainHandler.post(new Runnable() {
                     @Override
@@ -206,7 +211,9 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
                     }
                 });
             }else{
-                Toast.makeText(AddProductActivity.this, "Falha ao inserir café no banco de dados.", Toast.LENGTH_LONG).show();
+                View addProductView = findViewById(R.id.contraintLayout);
+                Snackbar snackbar = Snackbar.make(addProductView, "Falha ao inserir café no banco de dados.", Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
         }
     }

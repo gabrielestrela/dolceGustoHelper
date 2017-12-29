@@ -8,8 +8,6 @@ public interface BackEndCommHandler {
 
     enum Method{GET, POST}
 
-    void handleResponse(String response, Method m);
-    void handleResponse(int code, Method m);
-
+    void handleResponse(String response, int httpResponseCode, Method method);
 
 }

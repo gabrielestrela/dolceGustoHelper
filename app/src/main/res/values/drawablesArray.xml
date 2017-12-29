@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="imagesArray">
+        <item>@drawable/espressointensodecaf</item>
+        <item>@drawable/ristretto</item>
+        <item>@drawable/ristrettoardenza</item>
+        <item>@drawable/espresso</item>
+        <item>@drawable/espressodecaf</item>
+        <item>@drawable/espressointenso</item>
+        <item>@drawable/espressobarista</item>
+        <item>@drawable/cafeaulait</item>
+        <item>@drawable/capuccino</item>
+        <item>@drawable/caramellattemacchiato</item>
+        <item>@drawable/cortado</item>
+        <item>@drawable/lattemacchiato</item>
+        <item>@drawable/soycappuccino</item>
+        <item>@drawable/vanillalattemacchiato</item>
+        <item>@drawable/nestealimao</item>
+        <item>@drawable/nesteapessego</item>
+        <item>@drawable/chococino</item>
+        <item>@drawable/chococinocaramel</item>
+        <item>@drawable/mocha</item>
+        <item>@drawable/nescau</item>
+        <item>@drawable/cafematinal</item>
+        <item>@drawable/lungo</item>
+        <item>@drawable/chaitealatte</item>
+        <item>@drawable/marrakesh</item>
+    </array>
+</resources>

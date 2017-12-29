@@ -1,23 +1,20 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.GridView;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
     private ArrayList<Bitmap> imageArray;
 
-    CoffeGrid adapter;
+    CoffeGridAdapter adapter;
 
     /**
      * It initializes the arrays for the GridView, with all Dolce Gusto coffees.
@@ -58,63 +55,13 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
      * Since I ain`t using any database, all resides in array lists.
      */
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void updateDB() throws IOException {
+    public void startCoffeeFetchRequest() throws IOException {
 
 
         BackEndComm comm = new BackEndComm();
         String url = "http://10.0.2.2:8080/coffee/";
         comm.get(url, this);
 
-//        Coffee coffee = new Coffee();
-//
-//        coffee.setName("Espresso Intenso Decaffeinato");
-//        coffee.setCapsules(1);
-//        coffee.setBars1(2);
-//        coffee.setBars2(0);
-//        coffee.setDescription("Cuidadosamente descafeinado, preserva todo o aroma, intensidade e sabor do nosso Espresso Intenso.");
-//
-//        // Adding the image to the database
-//        drawable = getDrawable(R.drawable.espressointensodecaf);
-//        bitmap = ((BitmapDrawable) drawable).getBitmap();
-//        stream = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//        bitmapData = stream.toByteArray();
-//        coffee.setImage(bitmapData);
-//
-//        coffees.add(coffee);
-
-    }
-
-    public ArrayList<Integer> generateDrawablesIds() {
-
-        ArrayList<Integer> drawables = new ArrayList<>();
-        drawables.add(R.drawable.espressointensodecaf);
-        drawables.add(R.drawable.ristretto);
-        drawables.add(R.drawable.ristrettoardenza);
-        drawables.add(R.drawable.espresso);
-        drawables.add(R.drawable.espressodecaf);
-        drawables.add(R.drawable.espressointenso);
-        drawables.add(R.drawable.espressobarista);
-        drawables.add(R.drawable.cafeaulait);
-        drawables.add(R.drawable.capuccino);
-        drawables.add(R.drawable.caramellattemacchiato);
-        drawables.add(R.drawable.cortado);
-        drawables.add(R.drawable.lattemacchiato);
-        drawables.add(R.drawable.soycappuccino);
-        drawables.add(R.drawable.vanillalattemacchiato);
-        drawables.add(R.drawable.nestealimao);
-        drawables.add(R.drawable.nesteapessego);
-        drawables.add(R.drawable.chococino);
-        drawables.add(R.drawable.chococinocaramel);
-        drawables.add(R.drawable.mocha);
-        drawables.add(R.drawable.nescau);
-        drawables.add(R.drawable.cafematinal);
-        drawables.add(R.drawable.lungo);
-        drawables.add(R.drawable.chaitealatte);
-        drawables.add(R.drawable.marrakesh);
-
-        return drawables;
     }
 
     public Bitmap decodeByteArray(byte[] byteArray) {
@@ -123,8 +70,6 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
     public void generateArrays() {
         ArrayList<Coffee> coffees = new DBRead().getCoffees();
-
-        Log.d("DB SIZE", " " + coffees.size());
 
         webArray = new ArrayList<>();
         imageArray = new ArrayList<>();
@@ -136,7 +81,6 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,26 +93,19 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 //        d.removeTable();
         new DBCreate().createTable();
 
-        /**
-         * Step to run the array initialization only once, than
-         * resetting the array, with the purpose of adding new
-         * coffees to the list.
-         */
-
-
         generateArrays();
 
         /**
          * Initilizing the GridView to show the coffees.
          */
-        adapter = new CoffeGrid(getApplicationContext(), webArray, imageArray);
+        adapter = new CoffeGridAdapter(getApplicationContext(), webArray, imageArray);
 
         grid = (GridView) findViewById(R.id.coffeGrid);
 
         grid.setAdapter(adapter);
 
         try {
-            updateDB();
+            startCoffeeFetchRequest();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -180,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
         grid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(MainActivity.this, "You Clicked at " + web[position], Toast.LENGTH_SHORT).show();
                 Bundle b = new Bundle();
                 coffeName = webArray.get(position);
                 b.putString("NAME", coffeName);
@@ -210,11 +146,11 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
             public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if(mLastFirstVisibleItem < firstVisibleItem) {
                     fab.hide();
-//                    Log.d("SCROLL DOWN", "TRUE");
+                    //SCROLL DOWN
                 }
                 if(mLastFirstVisibleItem > firstVisibleItem) {
                     fab.show();
-//                    Log.d("SCROLL UP", "TRUE");
+                    //SCROLL UP
                 }
                 mLastFirstVisibleItem = firstVisibleItem;
             }
@@ -234,32 +170,36 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void handleResponse(String response, Method m) {
+    public byte[] setImageBitmapData(int index, int length, TypedArray drawables) {
+        if(index >= length) {
+            drawable = getDrawable(R.drawable.coffecapsule);
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
 
-        if(m == Method.GET) {
+            return bitmapData = stream.toByteArray();
+        }else{
+            drawable = getDrawable(drawables.getResourceId(index, -1));//getDrawable(drawables.get(i));
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
+            stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+            return bitmapData = stream.toByteArray();
+        }
+    }
+
+    @Override
+    public void handleResponse(String response, int httpResponseCode, Method method) {
+
+        if(method == Method.GET) {
             ArrayList<Coffee> coffees = new ArrayList<>();
-            ArrayList<Integer> drawables = generateDrawablesIds();
+            int length = getResources().getTextArray(R.array.imagesArray).length;
+            TypedArray drawables = getResources().obtainTypedArray(R.array.imagesArray);
 
             coffees = BackEndComm.jsonToObj(response);
 
             for(int i = 0; i < coffees.size(); i++) {
-                if(i >= drawables.size()) {
-                    drawable = getDrawable(R.drawable.coffecapsule);
-                    bitmap = ((BitmapDrawable) drawable).getBitmap();
-                    stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    bitmapData = stream.toByteArray();
-                    coffees.get(i).setImage(bitmapData);
-                }else{
-                    drawable = getDrawable(drawables.get(i));
-                    bitmap = ((BitmapDrawable) drawable).getBitmap();
-                    stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    bitmapData = stream.toByteArray();
-                    coffees.get(i).setImage(bitmapData);
-                }
+                coffees.get(i).setImage(setImageBitmapData(i, length, drawables));
             }
 
             DBUpdate update = new DBUpdate();
@@ -280,10 +220,5 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
                 }
             });
         }
-    }
-
-    @Override
-    public void handleResponse(int code, Method m) {
-        //
     }
 }

@@ -37,14 +37,6 @@ public class ProductActivity extends AppCompatActivity {
 
          coffe = coffeRead.getCoffee(coffeeName);
 
-//         ArrayList<String> productNames = b.getStringArrayList("ProductNames");
-//         ArrayList<String> productDescs = b.getStringArrayList("Desc");
-//         ArrayList<Integer> imageIDs = b.getIntegerArrayList("ImagesIDs");
-//         final ArrayList<Integer> tracosCapsula1Array = b.getIntegerArrayList("Capsula1");
-//         final ArrayList<Integer> tracosCapsula2Array = b.getIntegerArrayList("Capsula2");
-//         final int pos = b.getInt("Pos");
-
-
          ImageView img = (ImageView) findViewById(R.id.imageID);
          img.setImageBitmap(decodeByteArray(coffe.getImage()));
 
@@ -65,9 +57,6 @@ public class ProductActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Bundle d = new Bundle();
                 d.putString("NAME", coffeeName);
-//                d.putIntegerArrayList("Capsula1", tracosCapsula1Array);
-//                d.putIntegerArrayList("Capsula2", tracosCapsula2Array);
-//                d.putInt("Pos", pos);
                 Intent i = new Intent(ProductActivity.this, TimerActivity.class);
                 i.putExtras(d);
                 startActivity(i);

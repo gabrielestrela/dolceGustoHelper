@@ -1,6 +1,5 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -29,23 +28,6 @@ public class CoffeeDeserializer implements JsonDeserializer<Coffee> {
         final int intensity = jsonObject.get("intensity").getAsInt();
 
         final String description = jsonObject.get("description").getAsString();
-
-        // In case we have arrays in the json
-//        final JsonArray jsonAvailabilityArray = jsonObject.get("availability").getAsJsonArray();
-//        final String[] availability = new String[jsonAvailabilityArray.size()];
-//        for(int i = 0; i < availability.length; i++) {
-//            final JsonElement jsonAvailability = jsonAvailabilityArray.get(i);
-//            availability[i] = jsonAvailability.getAsString();
-//        }
-
-        // In case we have null elements
-//        JsonElement descriptionElement = jsonObject.get("description");
-//        final String description;
-//        if(descriptionElement == null){
-//            description = "";
-//        }else{
-//            description = descriptionElement.getAsString();
-//        }
 
         final Coffee coffee = new Coffee();
         coffee.setName(name);

@@ -27,7 +27,7 @@ public class DB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-
+        new DBCreate().createTable();
     }
 
     @Override
