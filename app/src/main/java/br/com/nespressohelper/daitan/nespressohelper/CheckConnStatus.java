@@ -36,7 +36,7 @@ public class CheckConnStatus extends GcmTaskService {
                 Response response;
                 try {
                     response = getResponse(url);
-                    checkLocalRemoteDb(response.body().string());
+                    checkAndSyncLocalRemoteDb(response.body().string());
                     Log.i("STATUS", String.valueOf(response.code()));
                 } catch (IOException e) {
                     Log.i("SERVER", "DOWN");
@@ -48,7 +48,7 @@ public class CheckConnStatus extends GcmTaskService {
         }
     }
 
-    public void checkLocalRemoteDb(String json) {
+    public void checkAndSyncLocalRemoteDb(String json) {
         ArrayList<Coffee> coffeesRemote = new ArrayList<>();
         ArrayList<Coffee> coffeesLocal = new ArrayList<>();
 
@@ -63,10 +63,21 @@ public class CheckConnStatus extends GcmTaskService {
 
         if(coffeesRemote.size() > coffeesLocal.size()) {
             Log.i(">>>", "Remote database is bigger than local database!");
+            int startDiffIndex = coffeesRemote.size() - (coffeesRemote.size() - coffeesLocal.size()) + 1;
+            syncDataBase(coffeesRemote, startDiffIndex);
         }else if(coffeesLocal.size() == coffeesRemote.size()) {
             Log.i(">>>", "Local Database has the same size as the remote database!");
         }else {
             Log.i(">>>", "Local Database is bigger than remote database!");
+        }
+
+    }
+
+    public void syncDataBase(ArrayList<Coffee> coffeesRemote, int startDiffIndex){
+        DBUpdate update = new DBUpdate();
+
+        for (int i = startDiffIndex; i <= coffeesRemote.size(); i++) {
+            update.addCoffee(coffeesRemote.get(i));
         }
 
     }
