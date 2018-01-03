@@ -15,19 +15,16 @@ public class DBUpdate {
         SQLiteDatabase database = DB.getInstance().getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        if(!isDataAlreadyInDb(coffee)){
-            cv.put("NAME", coffee.getName());
-            cv.put("CAPSULES", coffee.getCapsules());
-            cv.put("BARS1", coffee.getBars1());
-            cv.put("BARS2", coffee.getBars2());
-            cv.put("INTENSITY", coffee.getIntensity());
-            cv.put("DESC", coffee.getDescription());
-            cv.put("KEY_IMAGE", coffee.getImage());
+        cv.put("NAME", coffee.getName());
+        cv.put("CAPSULES", coffee.getCapsules());
+        cv.put("BARS1", coffee.getBars1());
+        cv.put("BARS2", coffee.getBars2());
+        cv.put("INTENSITY", coffee.getIntensity());
+        cv.put("DESC", coffee.getDescription());
+        cv.put("KEY_IMAGE", coffee.getImage());
 
-            return database.insert(DB.TABLE_COFFEE, null, cv) != -1;
-        }else{
-            return false;
-        }
+        return database.insertWithOnConflict(DB.TABLE_COFFEE, null, cv, SQLiteDatabase.CONFLICT_IGNORE) != -1;
+
     }
 
     public boolean isDataAlreadyInDb(Coffee coffee) {

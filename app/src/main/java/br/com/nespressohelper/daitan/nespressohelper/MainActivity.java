@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,8 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,6 +98,10 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
         new DBCreate().createTable();
 
         generateArrays();
+
+        //checkConnection();
+
+        CheckConnStatus.isConnected(this);
 
         /**
          * Initilizing the GridView to show the coffees.
@@ -221,4 +229,31 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
             });
         }
     }
+
+    // Method to manually check connection status
+    private void checkConnection() {
+        NetworkHandler netHandler = new NetworkHandler();
+        boolean isConnected = netHandler.isAnyConnection();
+        showSnack(isConnected);
+    }
+
+    public void showSnack(boolean isConnected) {
+        String msg;
+        int color;
+        if(isConnected){
+            msg = "Connected to the internet";
+            color = Color.WHITE;
+        }else{
+            msg = "Not connected to the internet";
+            color = Color.RED;
+        }
+
+        Snackbar bar = Snackbar.make(findViewById(R.id.fab), msg, Snackbar.LENGTH_LONG);
+
+        View sbView = bar.getView();
+        TextView textview = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textview.setTextColor(color);
+        bar.show();
+    }
+
 }

@@ -10,13 +10,11 @@ import android.net.NetworkInfo;
  * Created by estrela on 12/29/17.
  */
 
-public class NetworkHandler extends BroadcastReceiver {
+public class NetworkHandler {
 
-    private ConnectivityManager connManager;
+    private  ConnectivityManager connManager;
     private Context context;
     private NetworkInfo netInfo;
-
-    public static NetworkHandlerListener connRecvListener;
 
     public NetworkHandler() {
         super();
@@ -37,21 +35,8 @@ public class NetworkHandler extends BroadcastReceiver {
     }
 
     public boolean isAnyConnection() {
-        connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        connManager = (ConnectivityManager) App.getInstance().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         netInfo = connManager.getActiveNetworkInfo();
         return (netInfo != null && netInfo.isConnectedOrConnecting());
-    }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        boolean isConnected = isAnyConnection();
-
-        if(connRecvListener != null) {
-            connRecvListener.onNetworkConnectionChanged(isConnected);
-        }
-    }
-
-    public interface NetworkHandlerListener {
-        void onNetworkConnectionChanged(boolean isConnected);
     }
 }
