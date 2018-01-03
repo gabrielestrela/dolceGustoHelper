@@ -19,7 +19,7 @@ import com.github.lzyzsd.circleprogress.DonutProgress;
 public class TimerActivity extends AppCompatActivity {
 
     private DonutProgress dp;
-    private static int SECONDSPERBAR = 3 * 1000;
+    private static int SECONDS_PER_BAR = 3 * 1000;
 
 
     @Override
@@ -60,7 +60,7 @@ public class TimerActivity extends AppCompatActivity {
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    new CountDownTimer(bars1 * SECONDSPERBAR, 1000) {
+                    new CountDownTimer(bars1 * SECONDS_PER_BAR, 1000) {
 
                         public void onTick(long millisUntilFinished) {
                             dp.setProgress(dp.getProgress()+ 100/calc1);
@@ -100,7 +100,7 @@ public class TimerActivity extends AppCompatActivity {
 
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    new CountDownTimer(bars1* SECONDSPERBAR, 1000) {
+                    new CountDownTimer(bars1* SECONDS_PER_BAR, 1000) {
 
                         public void onTick(long millisUntilFinished) {
                             dp.setProgress(dp.getProgress()+ 100/calc1);
@@ -121,7 +121,7 @@ public class TimerActivity extends AppCompatActivity {
 
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    new CountDownTimer(bars2* SECONDSPERBAR, 1000) {
+                                    new CountDownTimer(bars2* SECONDS_PER_BAR, 1000) {
 
                                         public void onTick(long millisUntilFinished) {
                                             dp.setProgress(dp.getProgress()+ 100/calc2);

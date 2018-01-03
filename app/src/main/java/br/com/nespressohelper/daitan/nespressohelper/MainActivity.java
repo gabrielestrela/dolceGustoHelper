@@ -170,24 +170,6 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
     }
 
-    public byte[] setImageBitmapData(int index, int length, TypedArray drawables) {
-        if(index >= length) {
-            drawable = getDrawable(R.drawable.coffecapsule);
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-            stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-            return bitmapData = stream.toByteArray();
-        }else{
-            drawable = getDrawable(drawables.getResourceId(index, -1));//getDrawable(drawables.get(i));
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-            stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-
-            return bitmapData = stream.toByteArray();
-        }
-    }
-
     @Override
     public void handleResponse(String response, int httpResponseCode, Method method) {
 
@@ -199,7 +181,8 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
             coffees = BackEndComm.jsonToObj(response);
 
             for(int i = 0; i < coffees.size(); i++) {
-                coffees.get(i).setImage(setImageBitmapData(i, length, drawables));
+                BitmapHandler bitHandler = new BitmapHandler();
+                coffees.get(i).setImage(bitHandler.getImageBitmapData(i, length, drawables));
             }
 
             DBUpdate update = new DBUpdate();

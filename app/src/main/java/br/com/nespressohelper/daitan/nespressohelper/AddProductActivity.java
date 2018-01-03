@@ -45,6 +45,12 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
+        coffeeName = (EditText) findViewById(R.id.prodNome);
+        coffeeDesc = (EditText) findViewById(R.id.prodDesc);
+        coffeeBars1 = (EditText) findViewById(R.id.tracos1);
+        coffeeBars2 = (EditText) findViewById(R.id.tracos2);
+        coffeeIntensity = (EditText) findViewById(R.id.intensity);
+
         final ImageView uploadImage = (ImageView) findViewById(R.id.uploadImage);
         Button addCoffe = (Button) findViewById(R.id.addBtn);
 
@@ -59,9 +65,10 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
             @Override
             public void onClick(View view) {
 //                Log.d("CLICOU", "ADD");
-                if(!validateInput()) {
-
-
+                if(validateInput()) {
+                    generateCoffeeObj();
+                }// if
+                else {
                     /**
                      * A little warning for the user. When he/she does not
                      * fill some of the fields.
@@ -77,23 +84,13 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
                     AlertDialog dialog = builder.create();
 
                     dialog.show();
-                }// if
-                /**
-                 * Passing the filled information back to the MainAcitivity.
-                 */
-                else {
-                    generateCoffeeObj();
                 }
             }
         });
     }
 
     public boolean validateInput() {
-        coffeeName = (EditText) findViewById(R.id.prodNome);
-        coffeeDesc = (EditText) findViewById(R.id.prodDesc);
-        coffeeBars1 = (EditText) findViewById(R.id.tracos1);
-        coffeeBars2 = (EditText) findViewById(R.id.tracos2);
-        coffeeIntensity = (EditText) findViewById(R.id.intensity);
+
         if(coffeeName.getText().toString().equals("") ||
                 coffeeDesc.getText().toString().equals("") ||
                 coffeeBars1.getText().toString().equals("")  ||
@@ -111,17 +108,14 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
         Coffee coffee = new Coffee();
 
         String name;
-        coffeeName = (EditText) findViewById(R.id.prodNome);
         name = coffeeName.getText().toString();
         coffee.setName(name);
 
         int bars1;
-        coffeeBars1 = (EditText) findViewById(R.id.tracos1);
         bars1 = Integer.parseInt(coffeeBars1.getText().toString());
         coffee.setBars1(bars1);
 
         int bars2;
-        coffeeBars2 = (EditText) findViewById(R.id.tracos2);
         bars2 = Integer.parseInt(coffeeBars2.getText().toString());
         coffee.setBars2(bars2);
 
@@ -134,17 +128,16 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
         coffee.setCapsules(capsules);
 
         int intensity;
-        coffeeIntensity = (EditText) findViewById(R.id.intensity);
         intensity = Integer.parseInt(coffeeIntensity.getText().toString());
         coffee.setIntensity(intensity);
 
         String description;
-        coffeeDesc = (EditText) findViewById(R.id.prodDesc);
         description = coffeeDesc.getText().toString();
         coffee.setDescription(description);
 
         bitmap = userInputBitmap;
-        coffee.setImage(generateImageByteArray(bitmap));
+        BitmapHandler bitHandler = new BitmapHandler();
+        coffee.setImage(bitHandler.getImageBitmapData(bitmap));
 
         DBUpdate update = new DBUpdate();
         if(update.addCoffee(coffee)) {
@@ -159,23 +152,6 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
 
         }
 
-    }
-
-    public byte[] generateImageByteArray(Bitmap bitmap) {
-        if (bitmap == null) {
-            drawable = getDrawable(R.drawable.coffecapsule);
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-            stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            bitmapData = stream.toByteArray();
-            return bitmapData;
-        }
-        else{
-            stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            bitmapData = stream.toByteArray();
-            return bitmapData;
-        }
     }
 
     @Override
