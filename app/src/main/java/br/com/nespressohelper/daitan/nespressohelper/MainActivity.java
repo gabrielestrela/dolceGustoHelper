@@ -64,23 +64,38 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
         BackEndComm comm = new BackEndComm();
         String url = "http://10.0.2.2:8080/coffee/";
-        comm.get(url, this);
+        comm.fetch(url, this);
 
-    }
-
-    public Bitmap decodeByteArray(byte[] byteArray) {
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 
     public void generateArrays() {
         ArrayList<Coffee> coffees = new DBRead().getCoffees();
 
-        webArray = new ArrayList<>();
-        imageArray = new ArrayList<>();
+        if(coffees.size() != 0) {
 
-        for(it = 0; it < coffees.size(); it++) {
-            webArray.add(coffees.get(it).getName());
-            imageArray.add(decodeByteArray(coffees.get(it).getImage()));
+            Log.i("TESTE", "ENTROU IF");
+
+
+            webArray = new ArrayList<>();
+            imageArray = new ArrayList<>();
+
+            for(it = 0; it < coffees.size(); it++) {
+                webArray.add(coffees.get(it).getName());
+                Log.i("IMAGE", String.valueOf(coffees.get(it).getImage()));
+                Log.i("NAME", coffees.get(it).getName());
+                BitmapHandler bitHandler = new BitmapHandler();
+                imageArray.add(bitHandler.decodeByteArray(coffees.get(it).getImage()));
+            }
+        }else {
+
+            Log.i("TESTE", "ENTROU ELSE");
+
+            BitmapHandler bitHandler = new BitmapHandler();
+            webArray = new ArrayList<>();
+            imageArray = new ArrayList<>();
+            webArray.add("testeNULL");
+            Bitmap bitmap = null;
+            imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(bitmap)));
         }
 
     }
@@ -90,18 +105,16 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /**
-         * Creating database if does not exists
-         */
-//        DBDelete d = new DBDelete();
-//        d.removeTable();
-        new DBCreate().createTable();
-
         generateArrays();
 
-        //checkConnection();
+        try {
+            startCoffeeFetchRequest();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         CheckConnStatus.isConnected(this);
+
 
         /**
          * Initilizing the GridView to show the coffees.
@@ -112,11 +125,6 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
         grid.setAdapter(adapter);
 
-        try {
-            startCoffeeFetchRequest();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         /**
          * Preparing data to be sent to the next acitivity, which will display information about the
@@ -181,6 +189,10 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
     @Override
     public void handleResponse(String response, int httpResponseCode, Method method) {
 
+        BitmapHandler bitHandler;
+
+        Log.i("ENTROU", "HANDLE");
+
         if(method == Method.GET) {
             ArrayList<Coffee> coffees = new ArrayList<>();
             int length = getResources().getTextArray(R.array.imagesArray).length;
@@ -189,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
             coffees = BackEndComm.jsonToObj(response);
 
             for(int i = 0; i < coffees.size(); i++) {
-                BitmapHandler bitHandler = new BitmapHandler();
+                bitHandler = new BitmapHandler();
                 coffees.get(i).setImage(bitHandler.getImageBitmapData(i, length, drawables));
             }
 

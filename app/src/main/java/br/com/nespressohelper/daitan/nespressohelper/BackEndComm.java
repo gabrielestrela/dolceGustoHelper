@@ -25,7 +25,18 @@ public class BackEndComm{
 
     OkHttpClient client = new OkHttpClient();
 
-    public void get(final String url, final BackEndCommHandler handler) throws IOException {
+    public static ArrayList<Coffee> jsonToObj(String json) {
+        ArrayList<Coffee> coffees = new ArrayList<>();
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Coffee.class, new CoffeeDeserializer());
+        Gson gson = builder.create();
+
+        coffees = gson.fromJson(json, new TypeToken<ArrayList<Coffee>>(){}.getType());
+
+        return coffees;
+    }
+
+    public void fetch(final String url, final BackEndCommHandler handler) throws IOException {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -41,17 +52,6 @@ public class BackEndComm{
 
         thread.start();
 
-    }
-
-    public static ArrayList<Coffee> jsonToObj(String json) {
-        ArrayList<Coffee> coffees = new ArrayList<>();
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Coffee.class, new CoffeeDeserializer());
-        Gson gson = builder.create();
-
-        coffees = gson.fromJson(json, new TypeToken<ArrayList<Coffee>>(){}.getType());
-
-        return coffees;
     }
 
     public static String objToJson(Coffee coffee) {

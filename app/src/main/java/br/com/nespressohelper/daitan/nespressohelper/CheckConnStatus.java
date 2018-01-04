@@ -1,6 +1,7 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
@@ -21,8 +22,9 @@ import okhttp3.Response;
 
 public class CheckConnStatus extends GcmTaskService {
 
-    private static int SYNC_PERIOD_SECONDS = 10;
+    private static int SYNC_PERIOD_SECONDS = 120;
     private final static String PERIODIC_SYNC_TAG = "CONNECTED";
+    private CoffeGridAdapter adapter;
 
     @Override
     public int onRunTask(TaskParams taskParams) {
@@ -76,9 +78,34 @@ public class CheckConnStatus extends GcmTaskService {
     public void syncDataBase(ArrayList<Coffee> coffeesRemote, int startDiffIndex){
         DBUpdate update = new DBUpdate();
 
-        for (int i = startDiffIndex; i <= coffeesRemote.size(); i++) {
+        for (int i = startDiffIndex; i < coffeesRemote.size(); i++) {
             update.addCoffee(coffeesRemote.get(i));
         }
+        Log.i("SYNC", "CALLED");
+    }
+
+    public void generateNewArrays(int startDiffIndex) {
+        ArrayList<Coffee> coffees;
+        ArrayList<String> names;
+        ArrayList<Bitmap> images;
+        BitmapHandler bitHandler = new BitmapHandler();
+        DBRead read = new DBRead();
+
+        coffees = read.getCoffees();
+
+        names = new ArrayList<>();
+        images = new ArrayList<>();
+
+        for(int i = 0; i < coffees.size() - startDiffIndex; i++) {
+            names.add(coffees.get(i).getName());
+            images.add(bitHandler.decodeByteArray(coffees.get(i).getImage()));
+        }
+
+        for (int i = startDiffIndex; i < coffees.size(); i++) {
+            names.add(coffees.get(i).getName());
+            images.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(null)));
+        }
+
 
     }
 
@@ -93,6 +120,8 @@ public class CheckConnStatus extends GcmTaskService {
 
         return response;
     }
+
+    
 
     public static void isConnected(Context context) {
         GcmNetworkManager gcmNetManager = GcmNetworkManager.getInstance(context);
