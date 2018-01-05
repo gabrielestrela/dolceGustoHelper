@@ -57,7 +57,7 @@ public class BitmapHandler {
     }
 
     public Bitmap decodeByteArray(byte[] byteArray) {
-        Log.i("ARRAY", String.valueOf(byteArray));
+//        Log.i("ARRAY", String.valueOf(byteArray));
         return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
     }
 

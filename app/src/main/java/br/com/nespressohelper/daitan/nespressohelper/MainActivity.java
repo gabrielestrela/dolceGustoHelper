@@ -1,11 +1,12 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
     private ArrayList<Bitmap> imageArray;
 
+    private int broadcastDiffIndex;
+
     CoffeGridAdapter adapter;
 
     /**
@@ -70,27 +73,30 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
     public void generateArrays() {
         ArrayList<Coffee> coffees = new DBRead().getCoffees();
+        BitmapHandler bitHandler = new BitmapHandler();
 
         if(coffees.size() != 0) {
-
-            Log.i("TESTE", "ENTROU IF");
-
 
             webArray = new ArrayList<>();
             imageArray = new ArrayList<>();
 
             for(it = 0; it < coffees.size(); it++) {
                 webArray.add(coffees.get(it).getName());
-                Log.i("IMAGE", String.valueOf(coffees.get(it).getImage()));
-                Log.i("NAME", coffees.get(it).getName());
-                BitmapHandler bitHandler = new BitmapHandler();
-                imageArray.add(bitHandler.decodeByteArray(coffees.get(it).getImage()));
+                Log.d("IMAGE", String.valueOf(coffees.get(it).getImage()));
+                if(coffees.get(it).getImage() != null) {
+                    imageArray.add(bitHandler.decodeByteArray(coffees.get(it).getImage()));
+                }else{
+                    imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(null)));
+                }
+            }
+
+        }else if (broadcastDiffIndex != 0 && coffees.size() != 0) {
+            Log.i("UPDATE", "REMOTE DB BIGGER THAN LOCAL");
+            for(int i = broadcastDiffIndex; i < coffees.size(); i++){
+                webArray.add(coffees.get(i).getName());
+                imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(null)));
             }
         }else {
-
-            Log.i("TESTE", "ENTROU ELSE");
-
-            BitmapHandler bitHandler = new BitmapHandler();
             webArray = new ArrayList<>();
             imageArray = new ArrayList<>();
             webArray.add("testeNULL");
@@ -105,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        broadcastDiffIndex = 0;
+
         generateArrays();
 
         try {
@@ -115,7 +123,6 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
         CheckConnStatus.isConnected(this);
 
-
         /**
          * Initilizing the GridView to show the coffees.
          */
@@ -125,6 +132,8 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
         grid.setAdapter(adapter);
 
+        final IntentFilter myFilter = new IntentFilter(CheckConnStatus.ACTION_FROM_SERVICE);
+        registerReceiver(mReceiver, myFilter);
 
         /**
          * Preparing data to be sent to the next acitivity, which will display information about the
@@ -226,29 +235,36 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
     }
 
     // Method to manually check connection status
-    private void checkConnection() {
-        NetworkHandler netHandler = new NetworkHandler();
-        boolean isConnected = netHandler.isAnyConnection();
-        showSnack(isConnected);
+//    private void checkConnection() {
+//        NetworkHandler netHandler = new NetworkHandler();
+//        boolean isConnected = netHandler.isAnyConnection();
+//        showSnack(isConnected);
+//    }
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            broadcastDiffIndex = intent.getIntExtra("data", -1);
+            Log.d("BroadcastService", " Received From Service: " + broadcastDiffIndex);
+            generateArrays();
+            adapter.setGridValues(webArray, imageArray);
+        }
+    };
+
+    private void syncDataBase() {
+        DBRead read = new DBRead();
+        ArrayList<Coffee> coffees = new ArrayList<>();
+
+        coffees = read.getCoffees();
+
+
     }
 
-    public void showSnack(boolean isConnected) {
-        String msg;
-        int color;
-        if(isConnected){
-            msg = "Connected to the internet";
-            color = Color.WHITE;
-        }else{
-            msg = "Not connected to the internet";
-            color = Color.RED;
-        }
-
-        Snackbar bar = Snackbar.make(findViewById(R.id.fab), msg, Snackbar.LENGTH_LONG);
-
-        View sbView = bar.getView();
-        TextView textview = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textview.setTextColor(color);
-        bar.show();
+    @Override
+    public void onDestroy() {
+        stopService(new Intent(CheckConnStatus.ACTION_STOP));
+        unregisterReceiver(mReceiver);
+        super.onDestroy();
     }
 
 }

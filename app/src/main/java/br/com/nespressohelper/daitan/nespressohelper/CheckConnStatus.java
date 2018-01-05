@@ -1,8 +1,13 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
@@ -24,7 +29,10 @@ public class CheckConnStatus extends GcmTaskService {
 
     private static int SYNC_PERIOD_SECONDS = 120;
     private final static String PERIODIC_SYNC_TAG = "CONNECTED";
-    private CoffeGridAdapter adapter;
+    protected static final String ACTION_START = "br.com.nespressohelper.daitan.nespressohelper.action.START";
+    protected static final String ACTION_STOP= "br.com.nespressohelper.daitan.nespressohelper.action.STOP";
+    protected static final String ACTION_TO_SERVICE = "br.com.nespressohelper.daitan.nespressohelper.action.TO_SERVICE";
+    protected static final String ACTION_FROM_SERVICE = "br.com.nespressohelper.daitan.nespressohelper.action.FROM_SERVICE";
 
     @Override
     public int onRunTask(TaskParams taskParams) {
@@ -78,35 +86,21 @@ public class CheckConnStatus extends GcmTaskService {
     public void syncDataBase(ArrayList<Coffee> coffeesRemote, int startDiffIndex){
         DBUpdate update = new DBUpdate();
 
-        for (int i = startDiffIndex; i < coffeesRemote.size(); i++) {
+        Log.d("SYNC_DATABASE", coffeesRemote.get(startDiffIndex-1).getName());
+
+        for (int i = startDiffIndex-1; i < coffeesRemote.size(); i++) {
             update.addCoffee(coffeesRemote.get(i));
         }
         Log.i("SYNC", "CALLED");
+        sendToActivity(startDiffIndex-1);
     }
 
-    public void generateNewArrays(int startDiffIndex) {
-        ArrayList<Coffee> coffees;
-        ArrayList<String> names;
-        ArrayList<Bitmap> images;
-        BitmapHandler bitHandler = new BitmapHandler();
-        DBRead read = new DBRead();
-
-        coffees = read.getCoffees();
-
-        names = new ArrayList<>();
-        images = new ArrayList<>();
-
-        for(int i = 0; i < coffees.size() - startDiffIndex; i++) {
-            names.add(coffees.get(i).getName());
-            images.add(bitHandler.decodeByteArray(coffees.get(i).getImage()));
-        }
-
-        for (int i = startDiffIndex; i < coffees.size(); i++) {
-            names.add(coffees.get(i).getName());
-            images.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(null)));
-        }
-
-
+    private void sendToActivity(Integer startDiffIndex) {
+        Log.d("BroadcastService", "Sending message to activity: " + startDiffIndex);
+        final Intent intent = new Intent(CheckConnStatus.ACTION_FROM_SERVICE);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("data", startDiffIndex);
+        sendBroadcast(intent, br.com.nespressohelper.daitan.nespressohelper.Manifest.permission.ALLOW);
     }
 
     public Response getResponse(String url) throws IOException {
@@ -120,7 +114,6 @@ public class CheckConnStatus extends GcmTaskService {
 
         return response;
     }
-
     
 
     public static void isConnected(Context context) {
@@ -136,4 +129,23 @@ public class CheckConnStatus extends GcmTaskService {
         gcmNetManager.schedule(pTask);
         Log.i("Teste", "onRunTask");
     }
+
+//    public void showSnack(boolean isConnected) {
+//        String msg;
+//        int color;
+//        if(isConnected){
+//            msg = "Connected to the internet";
+//            color = Color.WHITE;
+//        }else{
+//            msg = "Not connected to the internet";
+//            color = Color.RED;
+//        }
+//
+//        Snackbar bar = Snackbar.make(, msg, Snackbar.LENGTH_SHORT);//Snackbar.make(findViewById(R.id.fab), msg, Snackbar.LENGTH_LONG);
+//
+//        View sbView = bar.getView();
+//        TextView textview = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+//        textview.setTextColor(color);
+//        bar.show();
+//    }
 }
