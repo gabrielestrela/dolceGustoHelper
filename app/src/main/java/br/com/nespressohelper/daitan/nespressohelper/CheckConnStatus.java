@@ -28,6 +28,7 @@ import okhttp3.Response;
 public class CheckConnStatus extends GcmTaskService {
 
     private static int SYNC_PERIOD_SECONDS = 120;
+    private static boolean isServerOn = true;
     private final static String PERIODIC_SYNC_TAG = "CONNECTED";
     protected static final String ACTION_START = "br.com.nespressohelper.daitan.nespressohelper.action.START";
     protected static final String ACTION_STOP= "br.com.nespressohelper.daitan.nespressohelper.action.STOP";
@@ -50,6 +51,8 @@ public class CheckConnStatus extends GcmTaskService {
                     Log.i("STATUS", String.valueOf(response.code()));
                 } catch (IOException e) {
                     Log.i("SERVER", "DOWN");
+                    isServerOn = false;
+                    sendToActivity(0, isServerOn);
                     //e.printStackTrace();
                 }
                 return GcmNetworkManager.RESULT_SUCCESS;
@@ -72,13 +75,24 @@ public class CheckConnStatus extends GcmTaskService {
         Log.i("LOCAL_DB_SIZE", String.valueOf(coffeesLocal.size()));
 
         if(coffeesRemote.size() > coffeesLocal.size()) {
+
             Log.i(">>>", "Remote database is bigger than local database!");
             int startDiffIndex = coffeesRemote.size() - (coffeesRemote.size() - coffeesLocal.size()) + 1;
             syncDataBase(coffeesRemote, startDiffIndex);
+
         }else if(coffeesLocal.size() == coffeesRemote.size()) {
+
+            int startDiffIndex = coffeesRemote.size() - (coffeesRemote.size() - coffeesLocal.size()) + 1;
+            Log.i("StartDiffIndex", String.valueOf(startDiffIndex - 1));
+            if(!coffeesRemote.get(startDiffIndex - 1).getName().equals(coffeesLocal.get(startDiffIndex - 1).getName())) {
+                syncDataBase(coffeesRemote, startDiffIndex);
+            }
             Log.i(">>>", "Local Database has the same size as the remote database!");
+
         }else {
+
             Log.i(">>>", "Local Database is bigger than remote database!");
+
         }
 
     }
@@ -92,14 +106,15 @@ public class CheckConnStatus extends GcmTaskService {
             update.addCoffee(coffeesRemote.get(i));
         }
         Log.i("SYNC", "CALLED");
-        sendToActivity(startDiffIndex-1);
+        sendToActivity(startDiffIndex-1, isServerOn);
     }
 
-    private void sendToActivity(Integer startDiffIndex) {
+    private void sendToActivity(Integer startDiffIndex, boolean isConnected) {
         Log.d("BroadcastService", "Sending message to activity: " + startDiffIndex);
         final Intent intent = new Intent(CheckConnStatus.ACTION_FROM_SERVICE);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("data", startDiffIndex);
+        intent.putExtra("isServerOn", isServerOn);
         sendBroadcast(intent, br.com.nespressohelper.daitan.nespressohelper.Manifest.permission.ALLOW);
     }
 
@@ -129,23 +144,4 @@ public class CheckConnStatus extends GcmTaskService {
         gcmNetManager.schedule(pTask);
         Log.i("Teste", "onRunTask");
     }
-
-//    public void showSnack(boolean isConnected) {
-//        String msg;
-//        int color;
-//        if(isConnected){
-//            msg = "Connected to the internet";
-//            color = Color.WHITE;
-//        }else{
-//            msg = "Not connected to the internet";
-//            color = Color.RED;
-//        }
-//
-//        Snackbar bar = Snackbar.make(, msg, Snackbar.LENGTH_SHORT);//Snackbar.make(findViewById(R.id.fab), msg, Snackbar.LENGTH_LONG);
-//
-//        View sbView = bar.getView();
-//        TextView textview = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-//        textview.setTextColor(color);
-//        bar.show();
-//    }
 }

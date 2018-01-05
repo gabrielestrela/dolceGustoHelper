@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
     private int broadcastDiffIndex;
 
+    private boolean serverStatus;
+
     CoffeGridAdapter adapter;
 
     /**
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
             for(it = 0; it < coffees.size(); it++) {
                 webArray.add(coffees.get(it).getName());
-                Log.d("IMAGE", String.valueOf(coffees.get(it).getImage()));
+//                Log.d("IMAGE", String.valueOf(coffees.get(it).getImage()));
                 if(coffees.get(it).getImage() != null) {
                     imageArray.add(bitHandler.decodeByteArray(coffees.get(it).getImage()));
                 }else{
@@ -234,19 +236,18 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
         }
     }
 
-    // Method to manually check connection status
-//    private void checkConnection() {
-//        NetworkHandler netHandler = new NetworkHandler();
-//        boolean isConnected = netHandler.isAnyConnection();
-//        showSnack(isConnected);
-//    }
-
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             broadcastDiffIndex = intent.getIntExtra("data", -1);
-            Log.d("BroadcastService", " Received From Service: " + broadcastDiffIndex);
-            generateArrays();
+            serverStatus = intent.getBooleanExtra("isServerOn", false);
+            Log.d("BroadcastService", " Received From Service: " + broadcastDiffIndex + " " + "serverStatus");
+            if(serverStatus == false){
+                showSnack(serverStatus);
+            }else{
+                generateArrays();
+                showSnack(serverStatus);
+            }
             adapter.setGridValues(webArray, imageArray);
         }
     };
@@ -265,6 +266,25 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
         stopService(new Intent(CheckConnStatus.ACTION_STOP));
         unregisterReceiver(mReceiver);
         super.onDestroy();
+    }
+
+    public void showSnack(boolean isConnected) {
+        String msg;
+        int color;
+        if(isConnected){
+            msg = "Server online";
+            color = Color.WHITE;
+        }else{
+            msg = "Server is not online";
+            color = Color.RED;
+        }
+
+        Snackbar bar = Snackbar.make(findViewById(R.id.fab), msg, Snackbar.LENGTH_SHORT);//Snackbar.make(findViewById(R.id.fab), msg, Snackbar.LENGTH_LONG);
+
+        View sbView = bar.getView();
+        TextView textview = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textview.setTextColor(color);
+        bar.show();
     }
 
 }

@@ -15,15 +15,14 @@ import android.widget.TextView;
  */
 public class ProductActivity extends AppCompatActivity {
 
-    public Bitmap decodeByteArray(byte[] byteArray) {
-        return BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-    }
+    BitmapHandler bitHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
+        bitHandler = new BitmapHandler();
 
         /**
          * Getting information from MainActivity, such as the coffee name
@@ -38,7 +37,10 @@ public class ProductActivity extends AppCompatActivity {
          coffe = coffeRead.getCoffee(coffeeName);
 
          ImageView img = (ImageView) findViewById(R.id.imageID);
-         img.setImageBitmap(decodeByteArray(coffe.getImage()));
+         if(coffe.getImage() == null){
+             coffe.setImage(bitHandler.getImageBitmapData(null));
+         }
+         img.setImageBitmap(bitHandler.decodeByteArray(coffe.getImage()));
 
          TextView name = (TextView) findViewById(R.id.productName);
          name.setText(coffe.getName());
