@@ -137,7 +137,7 @@ public class AddProductActivity extends AppCompatActivity implements BackEndComm
 
         bitmap = userInputBitmap;
         BitmapHandler bitHandler = new BitmapHandler();
-        coffee.setImage(bitHandler.getImageBitmapData(bitmap));
+        coffee.setImage(bitHandler.getImageBitmapData(0, 0, null, bitmap));
 
         DBUpdate update = new DBUpdate();
         if(update.addCoffee(coffee)) {

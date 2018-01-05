@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
          */
 //        DBDelete d = new DBDelete();
 //        d.removeTable();
-        new DBCreate().createTable();
 
         generateArrays();
 
@@ -182,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
             for(int i = 0; i < coffees.size(); i++) {
                 BitmapHandler bitHandler = new BitmapHandler();
-                coffees.get(i).setImage(bitHandler.getImageBitmapData(i, length, drawables));
+                coffees.get(i).setImage(bitHandler.getImageBitmapData(i, length, drawables, null));
             }
 
             DBUpdate update = new DBUpdate();
