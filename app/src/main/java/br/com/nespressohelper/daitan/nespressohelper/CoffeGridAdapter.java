@@ -1,16 +1,15 @@
 package br.com.nespressohelper.daitan.nespressohelper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
+
 
 /**
  * Created by gabrielestrela on 09/11/17.
@@ -21,20 +20,27 @@ import java.util.ArrayList;
  * This class is necessary to create the GridView
  * It is the custom adapter.
  */
-public class CoffeGrid extends BaseAdapter {
+public class CoffeGridAdapter extends BaseAdapter {
    private Context mContext;
-   private final String[] web;
-   private final ArrayList<Integer> imageId;
+   private ArrayList<String> web;
+   private ArrayList<Bitmap> imageBitmaps;
 
-    public CoffeGrid(Context mContext, ArrayList<String> web, ArrayList<Integer> imageId) {
+    public CoffeGridAdapter(Context mContext, ArrayList<String> web, ArrayList<Bitmap> imageBitmaps) {
         this.mContext = mContext;
-        this.web = web.toArray(new String[0]);
-        this.imageId = imageId;
+        this.web = web;
+        this.imageBitmaps = imageBitmaps;
+    }
+
+    public void setGridValues(ArrayList<String> names, ArrayList<Bitmap> imageBitmaps) {
+        this.web = names;
+        this.imageBitmaps = imageBitmaps;
+
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return web.length;
+        return web.size();
     }
 
     @Override
@@ -51,27 +57,17 @@ public class CoffeGrid extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View grid = convertView;
 
-//        grid = new View(mContext);
-
-
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            grid = inflater.inflate(R.layout.grid_item, null);
+            grid = inflater.inflate(R.layout.grid_item, parent, false);
 
-        }else {
-            grid = (View) convertView;
         }
 
         TextView txt = (TextView) grid.findViewById(R.id.gridTxt);
-        txt.setText(web[position]);
+        txt.setText(web.get(position));
         ImageView img = (ImageView) grid.findViewById(R.id.gridImage);
-//        img.setImageResource(imageId[position]);
-        /**
-         * Picasso is used to better handling the images,
-         * and the cache.
-         * http://square.github.io/picasso/
-         */
-        Picasso.with(mContext).load(imageId.get(position)).into(img);
+
+        img.setImageBitmap(imageBitmaps.get(position));
 
         return grid;
     }
