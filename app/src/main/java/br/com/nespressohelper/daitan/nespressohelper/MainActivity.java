@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
                 if(coffees.get(it).getImage() != null) {
                     imageArray.add(bitHandler.decodeByteArray(coffees.get(it).getImage()));
                 }else{
-                    imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(null)));
+                    imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(0, 0, null, null)));
                 }
             }
 
@@ -96,14 +96,14 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
             Log.i("UPDATE", "REMOTE DB BIGGER THAN LOCAL");
             for(int i = broadcastDiffIndex; i < coffees.size(); i++){
                 webArray.add(coffees.get(i).getName());
-                imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(null)));
+                imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(0, 0, null, null)));
             }
         }else {
             webArray = new ArrayList<>();
             imageArray = new ArrayList<>();
             webArray.add("testeNULL");
             Bitmap bitmap = null;
-            imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(bitmap)));
+            imageArray.add(bitHandler.decodeByteArray(bitHandler.getImageBitmapData(0, 0, null, bitmap)));
         }
 
     }
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements BackEndCommHandle
 
             for(int i = 0; i < coffees.size(); i++) {
                 bitHandler = new BitmapHandler();
-                coffees.get(i).setImage(bitHandler.getImageBitmapData(i, length, drawables));
+                coffees.get(i).setImage(bitHandler.getImageBitmapData(i, length, drawables, null));
             }
 
             DBUpdate update = new DBUpdate();

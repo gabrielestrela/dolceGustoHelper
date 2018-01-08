@@ -38,7 +38,7 @@ public class ProductActivity extends AppCompatActivity {
 
          ImageView img = (ImageView) findViewById(R.id.imageID);
          if(coffe.getImage() == null){
-             coffe.setImage(bitHandler.getImageBitmapData(null));
+             coffe.setImage(bitHandler.getImageBitmapData(0, 0, null,null));
          }
          img.setImageBitmap(bitHandler.decodeByteArray(coffe.getImage()));
 
