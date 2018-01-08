@@ -14,36 +14,31 @@ import java.io.ByteArrayOutputStream;
  */
 
 public class BitmapHandler {
-
-    private Drawable drawable;
-    private Bitmap bitmap;
-    private ByteArrayOutputStream stream;
-    private byte[] bitmapData;
     
 
     public byte[] getImageBitmapData(int index, int length, TypedArray drawables, Bitmap bitmap) {
 
-        if(index >= length && bitmap == null){
-            drawable = ContextCompat.getDrawable(App.getContext(), R.drawable.coffecapsule);
-            bitmap = ((BitmapDrawable) drawable).getBitmap();
-            stream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            bitmapData = stream.toByteArray();
-            return bitmapData;
-        }else{
-            if(bitmap != null){
-                stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                bitmapData = stream.toByteArray();
-                return bitmapData;
-            }else{
+        if(bitmap == null) {
+            Drawable drawable;
+            if(index >= length) {
+                drawable = ContextCompat.getDrawable(App.getContext(), R.drawable.coffecapsule);
+            }else {
                 drawable = ContextCompat.getDrawable(App.getContext(), drawables.getResourceId(index, -1));
-                bitmap = ((BitmapDrawable) drawable).getBitmap();
-                stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                return bitmapData = stream.toByteArray();
             }
+            bitmap = ((BitmapDrawable) drawable).getBitmap();
         }
+
+        return getByteArrayFromBitmap(bitmap);
+    }
+
+    public byte[] getByteArrayFromBitmap(Bitmap bitmap) {
+
+        ByteArrayOutputStream stream;
+
+        stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+
+        return stream.toByteArray();
     }
 
 }
